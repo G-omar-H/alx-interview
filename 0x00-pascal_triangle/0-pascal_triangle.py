@@ -12,7 +12,7 @@ def pascal_triangle(n):
     Args:
         n (int): number of rows
     """
-    if not n:
+    if n <= 0:
         return []
     rows = []
     for row in range(n):
