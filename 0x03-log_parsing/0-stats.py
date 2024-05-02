@@ -42,24 +42,25 @@ totalFileSize = 0
 statusDict = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 occured = {}
 report = {}
-try:
-    for line in sys.stdin:
-        recursion += 1
-        match = re.match(pattern, line.rstrip())
-        if match:
-            totalFileSize += int(match.group("size"))
-            status = int(match.group("status"))
-            statusDict[status] = statusDict.get(status) + 1
-            occured[status] = statusDict.get(status)
-            report = f"File size: {totalFileSize}\n"
-            for key, value in dict(sorted(occured.items())).items():
-                stat = f"{key}: {value}\n"
-                report = report + stat
-            if recursion == 10:
-                recursion = 0
-                print(report)
-        sign_hand = partial(handler, report=report)
-        signal.signal(signal.SIGINT, sign_hand)
 
-except KeyboardInterrupt:
-    print(report)
+for line in sys.stdin:
+    recursion += 1
+    match = re.match(pattern, line.rstrip())
+    if match:
+        totalFileSize += int(match.group("size"))
+        status = int(match.group("status"))
+        statusDict[status] = statusDict.get(status) + 1
+        occured[status] = statusDict.get(status)
+        report = f"File size: {totalFileSize}\n"
+        sortedDict = dict(sorted(occured.items()))
+        for i, (key, value) in enumerate(sortedDict.items()):
+            if i == len(sortedDict) - 1:
+                stat = f"{key}: {value}"
+            else:
+                stat = f"{key}: {value}\n"
+            report = report + stat
+        if recursion == 10:
+            recursion = 0
+            print(report)
+    sign_hand = partial(handler, report=report)
+    signal.signal(signal.SIGINT, sign_hand)
