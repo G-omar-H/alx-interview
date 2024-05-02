@@ -18,38 +18,49 @@ Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.
         status codes should be printed in ascending order
 
 """
-
+from functools import partial
+import signal
 import sys
+import os
+import re
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    pattern = (
+        r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - "
+        r"\[(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\] "
+        r'"(GET \/projects\/260 HTTP\/1\.1)" '
+        r"(?P<status>\d{3}) "
+        r"(?P<size>\d+)"
+    )
+    recursion = 0
 
-    filesize, count = 0, 0
-    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
-    stats = {k: 0 for k in codes}
+    def handler(signum, frame, report):
+        print(report)
 
-    def print_stats(stats: dict, file_size: int) -> None:
-        print("File size: {:d}".format(filesize))
-        for k, v in sorted(stats.items()):
-            if v:
-                print("{}: {}".format(k, v))
+    totalFileSize = 0
+    statusDict = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0,
+                  405: 0, 500: 0}
+    occured = {}
+    report = {}
 
-    try:
-        for line in sys.stdin:
-            count += 1
-            data = line.split()
-            try:
-                status_code = data[-2]
-                if status_code in stats:
-                    stats[status_code] += 1
-            except BaseException:
-                pass
-            try:
-                filesize += int(data[-1])
-            except BaseException:
-                pass
-            if count % 10 == 0:
-                print_stats(stats, filesize)
-        print_stats(stats, filesize)
-    except KeyboardInterrupt:
-        print_stats(stats, filesize)
-        raise
+    for line in sys.stdin:
+        recursion += 1
+        match = re.match(pattern, line.rstrip())
+        if match:
+            totalFileSize += int(match.group("size"))
+            status = int(match.group("status"))
+            statusDict[status] = statusDict.get(status) + 1
+            occured[status] = statusDict.get(status)
+            report = f"File size: {totalFileSize}\n"
+            sortedDict = dict(sorted(occured.items()))
+            for i, (key, value) in enumerate(sortedDict.items()):
+                if i == len(sortedDict) - 1:
+                    stat = f"{key}: {value}"
+                else:
+                    stat = f"{key}: {value}\n"
+                report = report + stat
+            if recursion == 10:
+                recursion = 0
+                print(report)
+        sign_hand = partial(handler, report=report)
+        signal.signal(signal.SIGINT, sign_hand)
