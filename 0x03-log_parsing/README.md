@@ -34,24 +34,21 @@ Here are some ways you can contribute to the success of this project:
 To get started with the Log Parsing project, follow these steps:
 
 1. **Clone the Repository**: Clone the project repository to your local machine using Git:
-
+```bash
 git clone https://github.com/alx-interview/0x03-log_parsing.git
-
-markdown
+```
 
 
 2. **Navigate to the Project Directory**: Move into the project directory using the `cd` command:
-
+```bahs
 cd 0x03-log_parsing
-
-markdown
+```
 
 
 3. **Run the Scripts**: Execute the provided scripts to generate sample log data and compute metrics:
-
+```bash
 ./0-generator.py | ./0-stats.py
-
-vbnet
+```
 
 
 4. **Explore and Experiment**: Dive into the project tasks, experiment with different approaches, and have fun coding!
