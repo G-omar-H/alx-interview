@@ -12,55 +12,56 @@ Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.
         previous <file size> (see input format above)
     Number of lines by status code:
         possible status code: 200, 301, 400, 401, 403, 404, 405 and 500
-        if a status code doesn’t appear or is not an integer,
-        don’t print anything for this status code
+        if a status code doesn't appear or is not an integer,
+        don't print anything for this status code
         format: <status code>: <number>
         status codes should be printed in ascending order
 
 """
-from functools import partial
 import signal
 import sys
 import os
 import re
 
+# Regular expression pattern to match the input format
 pattern = (
     r"(?P<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - "
     r"\[(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\] "
-    r'"(GET \/projects\/260 HTTP\/1\.1)" '
+    r'"GET /projects/260 HTTP/1\.1" '
     r"(?P<status>\d{3}) "
     r"(?P<size>\d+)"
 )
-recursion = 0
+
+total_file_size = 0
+status_count = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+line_count = 0
 
 
-def handler(signum, frame, report):
-    print(report)
+def print_statistics():
+    """Prints the statistics based on the current data."""
+    print(f"File size: {total_file_size}")
+    for status_code, count in sorted(status_count.items()):
+        if count > 0:
+            print(f"{status_code}: {count}")
 
 
-totalFileSize = 0
-statusDict = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
-occured = {}
-report = {}
+def signal_handler(sig, frame):
+    """Signal handler function to print statistics on interruption."""
+    print_statistics()
+    sys.exit(0)
 
+
+# Register signal handler for interruption (CTRL + C)
+signal.signal(signal.SIGINT, signal_handler)
+
+# Process input line by line
 for line in sys.stdin:
-    recursion += 1
     match = re.match(pattern, line.rstrip())
     if match:
-        totalFileSize += int(match.group("size"))
-        status = int(match.group("status"))
-        statusDict[status] = statusDict.get(status) + 1
-        occured[status] = statusDict.get(status)
-        report = f"File size: {totalFileSize}\n"
-        sortedDict = dict(sorted(occured.items()))
-        for i, (key, value) in enumerate(sortedDict.items()):
-            if i == len(sortedDict) - 1:
-                stat = f"{key}: {value}"
-            else:
-                stat = f"{key}: {value}\n"
-            report = report + stat
-        if recursion == 10:
-            recursion = 0
-            print(report)
-    sign_hand = partial(handler, report=report)
-    signal.signal(signal.SIGINT, sign_hand)
+        line_count += 1
+        total_file_size += int(match.group("size"))
+        status_code = int(match.group("status"))
+        status_count[status_code] += 1
+        # Print statistics after every 10 lines
+        if line_count % 10 == 0:
+            print_statistics()
