@@ -1,66 +1,67 @@
-# 0x07. Rotate 2D Matrix
+# 0x07. Rotate 2D Matrix AlgorithmPython
 
-## AlgorithmPython
+## Overview
+This project involves implementing an in-place algorithm to rotate an n x n 2D matrix by 90 degrees clockwise. This challenge tests your understanding of matrix manipulation and in-place operations in Python.
 
+## Key Concepts
 
-### Project Description
+### Matrix Representation in Python
+- **2D Matrices**: Represented using lists of lists.
+- **Element Access and Modification**: Learn to access and modify elements in a 2D matrix.
 
-In this project, I am tasked with implementing an in-place algorithm to rotate an n x n 2D matrix by 90 degrees clockwise. This challenge requires a solid understanding of matrix manipulation and in-place operations in Python.
+### In-place Operations
+- **Efficiency**: Perform operations without creating a copy of the data structure to minimize space complexity.
 
-### Concepts Needed
+### Matrix Transposition
+- **Definition**: Swapping rows and columns in a matrix.
+- **Implementation**: Essential step in the rotation process.
 
-1. **Matrix Representation in Python**:
-    - Understanding how 2D matrices are represented using lists of lists in Python.
-    - Accessing and modifying elements in a 2D matrix.
+### Reversing Rows in a Matrix
+- **Row Manipulation**: Reverse the order of rows as part of the rotation.
 
-2. **In-place Operations**:
-    - Performing operations on data without creating a copy of the data structure.
-    - Minimizing space complexity by modifying the matrix in place.
+### Nested Loops
+- **Iteration**: Use nested loops to iterate through 2D data structures.
+- **Element Modification**: Achieve the desired rotation through nested loops.
 
-3. **Matrix Transposition**:
-    - Understanding the concept of transposing a matrix (swapping rows and columns).
-    - Implementing matrix transposition as a step in the rotation process.
-
-4. **Reversing Rows in a Matrix**:
-    - Manipulating rows of a matrix by reversing their order as part of the rotation process.
-
-5. **Nested Loops**:
-    - Using nested loops to iterate through 2D data structures like matrices.
-    - Modifying elements within nested loops to achieve the desired rotation.
-
-### Resources
+## Resources
 
 - **Python Official Documentation**:
-    - [Data Structures](https://docs.python.org/3/tutorial/datastructures.html) (list comprehensions, nested list comprehension)
-    - [More on Lists](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)
-
+  - [Data Structures](https://docs.python.org/3/tutorial/datastructures.html)
+  - [More on Lists](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists)
+  
 - **GeeksforGeeks Articles**:
-    - [Inplace rotate square matrix by 90 degrees](https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/)
-    - [Transpose a matrix in Single line in Python](https://www.geeksforgeeks.org/transpose-matrix-single-line-python/)
-
+  - [Inplace rotate square matrix by 90 degrees](https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/)
+  - [Transpose a matrix in Single line in Python](https://www.geeksforgeeks.org/transpose-matrix-single-line-python/)
+  
 - **TutorialsPoint**:
-    - [Python Lists](https://www.tutorialspoint.com/python/python_lists.htm) for basics of list manipulation in Python.
+  - [Python Lists](https://www.tutorialspoint.com/python/python_lists.htm)
 
-### Additional Resources
+## Approach
 
-- [Mock Technical Interview](#)
+1. **Transpose the Matrix**: Swap rows with columns.
+2. **Reverse Each Row**: Reverse the order of elements in each row to achieve the 90-degree clockwise rotation.
 
+## Requirements
 
-### Tasks
+- **Editors**: vi, vim, emacs
+- **Environment**: Ubuntu 20.04 LTS with python3 (version 3.8.10)
+- **Style Guide**: Follow the pycodestyle style (version 2.8.0)
+- **Documentation**: Document all modules and functions
+- **Execution**: Ensure all files are executable and end with a new line
 
-#### 0. Rotate 2D Matrix
+## Task
 
-**Score**: 0.0% (Checks completed: 0.0%)
+### Rotate 2D Matrix
 
-Given an n x n 2D matrix, rotate it 90 degrees clockwise.
-
+- **Objective**: Rotate an n x n 2D matrix by 90 degrees clockwise in-place.
 - **Prototype**: `def rotate_2d_matrix(matrix):`
-- Do not return anything. The matrix must be edited in-place.
-- You can assume the matrix will have 2 dimensions and will not be empty.
+- **Constraints**: 
+  - Do not return anything.
+  - Assume the matrix is non-empty and has 2 dimensions.
 
-**Example**:
+**Example:**
+
 ```python
-jessevhedden$ cat main_0.py
 #!/usr/bin/python3
 """
 Test 0x07 - Rotate 2D Matrix
@@ -68,19 +69,22 @@ Test 0x07 - Rotate 2D Matrix
 rotate_2d_matrix = __import__('0-rotate_2d_matrix').rotate_2d_matrix
 
 if __name__ == "__main__":
-    matrix = [[1, 2, 3],
-              [4, 5, 6],
-              [7, 8, 9]]
+    matrix = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
 
     rotate_2d_matrix(matrix)
     print(matrix)
+```
+Expected Output:
 
-jessevhedden$
-jessevhedden$ ./main_0.py
+```lua
+
 [[7, 4, 1],
  [8, 5, 2],
  [9, 6, 3]]
-jessevhedden$
 ```
 
 ## Repository
