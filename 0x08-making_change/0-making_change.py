@@ -19,15 +19,12 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
     seq = sys.maxsize
-    flag = 0
+    memo = [sys.maxsize] * (total + 1)
+    memo[0] = 0
 
-    size = len(coins)
+    for i in range(1, total + 1):
+        for coin in coins:
+            if coin <= i:
+                memo[i] = min(memo[i], memo[i - coin] + 1)
 
-    for i in range(0, size):
-        if coins[i] <= total:
-            sub_seq = makeChange(coins, total - coins[i])
-            if sub_seq != sys.maxsize and sub_seq + 1 < seq:
-                seq = sub_seq + 1
-        else:
-            seq = sub_seq - 1
-    return seq
+    return memo[total] if memo[total] != sys.maxsize else -1
