@@ -28,4 +28,6 @@ def makeChange(coins, total):
             sub_seq = makeChange(coins, total - coins[i])
             if sub_seq != sys.maxsize and sub_seq + 1 < seq:
                 seq = sub_seq + 1
+        else:
+            seq = sub_seq - 1
     return seq
