@@ -16,7 +16,6 @@ def canUnlockAll(boxes):
     """
     open = 1
     visited = [0]
-    i = 0
     keys_to_check = [0]
     while keys_to_check:
         i = keys_to_check.pop()
