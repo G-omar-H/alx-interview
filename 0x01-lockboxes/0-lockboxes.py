@@ -3,6 +3,7 @@
 0-lockboxes.py
 """
 
+
 def canUnlockAll(boxes):
     """
     check if boxes can be opened,
@@ -11,19 +12,18 @@ def canUnlockAll(boxes):
     Args:
         boxes (List[List[int]]): n number of locked boxes
         Each box is numbered sequentially from 0 to n - 1
-        and each box may contain keys to the other boxes. 
+        and each box may contain keys to the other boxes.
     """
-    flag = True
-    for i in range(len(boxes)):
-        if i + 1 in boxes[i]:
-          flag = True
-        else:
-            for j in boxes[i]:
-                if j >= len(boxes):
-                    pass
-                elif i + 1 in boxes[j]:
-                    flag = True
-                else:
-                    flag = False
-    return flag
+    open = 1
+    visited = [0]
+    i = 0
+    keys_to_check = [0]
+    while keys_to_check:
+        i = keys_to_check.pop()
+        for key in boxes[i]:
+            if key in range(len(boxes)) and key not in visited:
+                open += 1
+                visited.append(key)
+                keys_to_check.append(key)
 
+    return open == len(boxes)
