@@ -50,7 +50,7 @@ def isWinner(x, nums):
         x (int): number of rounds
         nums (Set[int]): Set of numbers to interate on each round
     """
-    if not x or not nums:
+    if not x or not nums or x < 0:
         return None
     Maria = []
     Ben = []
@@ -61,6 +61,8 @@ def isWinner(x, nums):
         if len(nums):
             try:
                 num = nums.pop(0)
+                if num <= 1:
+                    pass
                 primes, multiples = SOE(num)
                 Maria.append(primes.pop(0))
                 Maria.append(multiples.pop(0))
