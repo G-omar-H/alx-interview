@@ -47,6 +47,7 @@ def isWinner(x, nums):
     for num in nums[:x]:
         if num < 2:
             ben_wins += 1
+            continue
 
         primes = SOE(num)
         turns = len(primes)
