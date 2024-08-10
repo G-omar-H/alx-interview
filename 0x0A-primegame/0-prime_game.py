@@ -14,27 +14,16 @@ def SOE(num):
     returns:
         the rest of the set of round numbers
     """
-    result = []
-    muls = []
     prime = [True for i in range(num + 1)]
     p = 2
-    seq = [i for i in range(1, num + 1)]
+
     while p * p <= num:
         if prime[p]:
             for i in range(p * p, num + 1, p):
                 prime[i] = False
 
         p += 1
-    for p in range(2, num + 1):
-        if prime[p]:
-            result.append(p)
-            tmp = []
-            for m in seq:
-                if m in range(p, num + 1, p):
-                    tmp.append(m)
-            muls.append(tmp)
-
-    return result, muls
+    return [p for p in range(2, num + 1) if prime[p]]
 
 
 def isWinner(x, nums):
@@ -52,33 +41,20 @@ def isWinner(x, nums):
     """
     if not x or not nums or x < 0 or nums == []:
         return None
+
     ben_wins = 0
     maria_wins = 0
-    for i in range(x):
-        if nums:
-            num = nums.pop(0)
-            if num <= 1:
-                pass
-            primes, multiples = SOE(num)
-            turn = 'Maria'
-            for i in range(num):
-                if turn == 'Maria':
-                    if primes:
-                        primes.pop(0)
-                        multiples.pop(0)
-                        turn = 'Ben'
-                    else:
-                        ben_wins += 1
-                        pass
-                else:
-                    if primes:
-                        primes.pop(0)
-                        multiples.pop(0)
-                        turn = 'Maria'
-                    else:
-                        maria_wins += 1
+    for num in nums[:x]:
+        if num < 2:
+            ben_wins += 1
+
+        primes = SOE(num)
+        turns = len(primes)
+
+        if turns % 2 == 0:
+            ben_wins += 1
         else:
-            break
+            maria_wins += 1
 
     if ben_wins > maria_wins:
         return 'Ben'
