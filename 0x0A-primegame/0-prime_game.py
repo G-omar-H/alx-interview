@@ -50,6 +50,8 @@ def isWinner(x, nums):
         x (int): number of rounds
         nums (Set[int]): Set of numbers to interate on each round
     """
+    if not x or not nums:
+        return None
     Maria = []
     Ben = []
     b = 0
@@ -73,4 +75,6 @@ def isWinner(x, nums):
             break
     if b > m:
         return 'Ben'
+    elif b == m:
+        return None
     return 'Maria'
