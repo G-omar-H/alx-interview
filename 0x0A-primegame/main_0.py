@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-
+import random
 isWinner = __import__('0-prime_game').isWinner
 
 
 print("Winner: {}".format(
-    isWinner(5, [1000003, 1000033, 1000037, 1000039, 1000081])))
+    isWinner(100, [random.randint(1, 10**6) for _ in range(100)])))
