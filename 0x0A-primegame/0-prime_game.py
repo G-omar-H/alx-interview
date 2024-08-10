@@ -50,33 +50,38 @@ def isWinner(x, nums):
         x (int): number of rounds
         nums (Set[int]): Set of numbers to interate on each round
     """
-    if not x or not nums or x < 0:
+    if not x or not nums or x < 0 or nums == []:
         return None
-    Maria = []
-    Ben = []
-    b = 0
-    m = 0
-    turn = 'Maria'
+    ben_wins = 0
+    maria_wins = 0
     for i in range(x):
-        if len(nums):
-            try:
-                num = nums.pop(0)
-                if num <= 1:
-                    pass
-                primes, multiples = SOE(num)
-                Maria.append(primes.pop(0))
-                Maria.append(multiples.pop(0))
-                Ben.append(primes.pop(0))
-                Ben.append(primes.pop(0))
-            except IndexError:
+        if nums:
+            num = nums.pop(0)
+            if num <= 1:
+                pass
+            primes, multiples = SOE(num)
+            turn = 'Maria'
+            for i in range(num):
                 if turn == 'Maria':
-                    b += 1
+                    if primes:
+                        primes.pop(0)
+                        multiples.pop(0)
+                        turn = 'Ben'
+                    else:
+                        ben_wins += 1
+                        pass
                 else:
-                    m += 1
+                    if primes:
+                        primes.pop(0)
+                        multiples.pop(0)
+                        turn = 'Maria'
+                    else:
+                        maria_wins += 1
         else:
             break
-    if b > m:
+
+    if ben_wins > maria_wins:
         return 'Ben'
-    elif b == m:
-        return None
-    return 'Maria'
+    elif maria_wins > ben_wins:
+        return 'Maria'
+    return None
